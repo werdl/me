@@ -1,0 +1,24 @@
+/*
+Retro styling for the site
+*/
+
+body {
+  background-color: #444;
+  font-family: 'Jetbrains Mono', monospace;
+  color: #f2f2f2;
+  margin: 0;
+  padding: 0;
+  font-weight: bolder;
+}
+
+.cursor {
+    font-family: monospace;
+}
+
+#text {
+    text-shadow: #f4f4f4;
+}
+
+a {
+    color: blue;
+}
