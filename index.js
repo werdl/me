@@ -4,10 +4,150 @@ let term, default_prompt;
 
 let last_exit_code = 0;
 
+erase_on_next = false;
+
+played_jingle = false;
+
+jingle_is_playing = false;
+
+
+function beep() {
+    if (jingle_is_playing) {
+        return;
+    }
+    // play specific frequency for 100ms
+    const ctx = new AudioContext();
+    const oscillator = ctx.createOscillator();
+    oscillator.type = "sine";
+    
+    oscillator.frequency.setValueAtTime(523.5, ctx.currentTime);
+
+    oscillator.connect(ctx.destination);
+
+    oscillator.start();
+
+    setTimeout(() => {
+        oscillator.stop();
+    }, 100);
+}
+
+function playCMajorTriad() {
+    const ctx = new AudioContext();
+
+    const c = ctx.createOscillator();
+    c.type = "sine";
+    c.frequency.setValueAtTime(261.63, ctx.currentTime);
+    c.connect(ctx.destination);
+
+    const e = ctx.createOscillator();
+    e.type = "sine";
+    e.frequency.setValueAtTime(329.63, ctx.currentTime);
+    e.connect(ctx.destination);
+    
+    const g = ctx.createOscillator();
+    g.type = "sine";
+    g.frequency.setValueAtTime(392.00, ctx.currentTime);
+    g.connect(ctx.destination);
+
+    c.start();
+    
+    setTimeout(() => {
+        e.start();
+    }, 300);
+
+    setTimeout(() => {
+        g.start();
+    }
+    , 600);
+
+    setTimeout(() => {
+        c.stop();
+        e.stop();
+        g.stop();
+    }, 2000);
+}
+
+function playCMinorTriad() {
+    const ctx = new AudioContext();
+
+    const c = ctx.createOscillator();
+    c.type = "sine";
+    c.frequency.setValueAtTime(261.63, ctx.currentTime);
+    c.connect(ctx.destination);
+
+    const e = ctx.createOscillator();
+    e.type = "sine";
+    e.frequency.setValueAtTime(311.13, ctx.currentTime);
+    e.connect(ctx.destination);
+    
+    const g = ctx.createOscillator();
+    g.type = "sine";
+    g.frequency.setValueAtTime(392.00, ctx.currentTime);
+    g.connect(ctx.destination);
+
+    c.start();
+    
+    setTimeout(() => {
+        e.start();
+    }, 300);
+
+    setTimeout(() => {
+        g.start();
+    }
+    , 600);
+
+    setTimeout(() => {
+        c.stop();
+        e.stop();
+        g.stop();
+    }, 2000);
+}
+
+function playOpeningJingle() {
+    // Play an upbeat jingle with five notes
+    const notes = ["C", "E", "G", "HIGH_C", "C"];
+    for (let note of notes) {
+        playSound(note, (notes.indexOf(note) * 200), notes.indexOf(note) * 150);
+    }
+
+    setTimeout(() => {
+        jingle_is_playing = false;
+    }, 1000);
+}
+
+function playSound(note, length=1000, start_in=0) {
+    let notes = {
+        "C": 261.63,
+        "D": 293.66,
+        "E": 329.63,
+        "F": 349.23,
+        "G": 392.00,
+        "A": 440.00,
+        "B": 493.88,
+        "HIGH_C": 523.25,
+    }
+
+    const ctx = new AudioContext();
+
+    const oscillator = ctx.createOscillator();
+    oscillator.type = "sine";
+    oscillator.frequency.setValueAtTime(notes[note], ctx.currentTime);
+    oscillator.connect(ctx.destination);
+
+    setTimeout(() => {
+        oscillator.start();
+    }, start_in);
+
+    setTimeout(() => {
+        oscillator.stop();
+    }, length + start_in);
+}
+    
+
 document.addEventListener("DOMContentLoaded", function () {
     term = document.getElementById("text");
 
-    default_prompt = "user@werdl:~$ ";
+    default_prompt = "<span style='color: #00ff00;'>user</span>@<span style='color: #00ffff;'>werdl</span>:<span style='color: #ff0000;'>~</span>$";
 
     document.querySelector("#prompt").innerHTML = `(0) ${default_prompt}`
 
@@ -34,7 +174,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 function notFound() {
-    result.innerHTML = "command not found";
+    result.innerHTML = `${current_line}: command not found`
 }
 
 function matchLine(line) {
@@ -97,15 +237,25 @@ function matchLine(line) {
             }
 
             result.innerHTML += "</ul>";
+        },
+
+        "contact": function () {
+            result.innerHTML = `
+            <h2>contact</h2>
+            you can contact me at <a href="mailto:werdl_is_cool@outlook.com">werdl_is_cool@outlook.com"</a>. my github account is <a href="https://github.com/werdl">werdl</a>.
+            `
         }
+        
 
     }
 
     if (line in functions) {
+        playCMajorTriad();
         functions[line]();
         last_exit_code = 0;
     }
     else {
+        playCMinorTriad();
         notFound();
         last_exit_code = 1;
     }
@@ -113,8 +263,19 @@ function matchLine(line) {
 
 // event listener listening for any key press
 document.addEventListener("keydown", function (event) {
+    beep();
+
+    if (!played_jingle) {
+        jingle_is_playing = true;
+        playOpeningJingle();
+        played_jingle = true;
+    }
     // if the key pressed is not enter
     if (event.key !== "Enter") {
+        if (erase_on_next) {
+            current_line = "";
+            erase_on_next = false;
+        }
         // handle backspace
         if (event.key === "Backspace") {
             current_line = current_line.slice(0, -1);
@@ -126,15 +287,15 @@ document.addEventListener("keydown", function (event) {
 
         }
 
+
+
         term.innerHTML = current_line;
     } else {
         // if the key pressed is enter, log the current line and reset it
         console.log(current_line);
         matchLine(current_line);
 
-        current_line = "";
-
-        term.innerHTML = "";
+        erase_on_next = true;
 
         // add the default prompt to the terminal
         document.querySelector("#prompt").innerHTML = `(${last_exit_code}) ${default_prompt}`
