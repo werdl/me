@@ -116,3 +116,7 @@ footer {
     justify-content: center;
 
 }
+
+div.year::before {
+    content: ' ';
+}
