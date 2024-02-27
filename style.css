@@ -89,3 +89,30 @@ hr {
 ul li {
     padding: 0.5rem;
 }
+
+.socials-bottom {
+    color: black;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.socials-bottom a {
+    display: inline-block;
+    margin: 0.5rem;
+
+    color: black;
+
+    text-decoration: none;
+}
+
+footer {
+    padding-bottom: 5vh;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+}

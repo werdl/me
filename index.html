@@ -26,10 +26,10 @@ https://cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/css/jetbrains-mono.min.css
             <a href="#who">who</a>
             <a href="#projects">projects</a>
             <a href="#miniblog">miniblog</a>
+            <a href="#contact">contact</a>
         </div>
 
         <div class="socials">
-
             <a class="social" href="https://github.com/werdl"><i class="fab fa-github"></i></a>
             <a class="social" href="https://werdl.blogspot.com"><i class="fa-solid fa-blog"></i></a>
             <a class="social tilde" href="https://tilde.club/~werdl">~</a>
@@ -94,6 +94,24 @@ https://cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/css/jetbrains-mono.min.css
     <div class="content" id="miniblog-content">
 
     </div>
+
+    <hr id="contact">
+    <div class="content" id="contact-content">
+        <h1>contact</h1>
+        <div class="contact">
+            email me at <a href="mailto:werdl_is_cool@outlook.com">werdl_is_cool@outlook.com</a>
+        </div>
+        <div class="socials-bottom">
+            <a class="social" href="https://github.com/werdl"><i class="fab fa-github"></i></a>
+            <a class="social" href="https://werdl.blogspot.com"><i class="fa-solid fa-blog"></i></a>
+            <a class="social tilde" href="https://tilde.club/~werdl">~</a>
+        </div>
+    </div>
+
+    <footer>
+        made by werdl. (c) <div class="year"></div>
+    </footer>
+
 
     <script>
         let posts = [
@@ -161,6 +179,9 @@ https://cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/css/jetbrains-mono.min.css
         document.querySelectorAll("hr").forEach(hr => {
             observer.observe(hr);
         });
+
+        /* update the year in the footer */
+        document.querySelector(".year").innerHTML = " " + (new Date().getFullYear()).toString();
     </script>
 </body>
 
