@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>miniblog werdl</title>
+    <link href="
+https://cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/css/jetbrains-mono.min.css
+" rel="stylesheet">
+
+    <link rel="stylesheet" href="../style.css">
+
+    <script src="https://kit.fontawesome.com/e07fe2ed46.js" crossorigin="anonymous"></script>
+
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+
+<body>
+    <div class="navbar">
+        <div class="links">
+            <a href="/miniblog/" class="focus">miniblog</a>
+            <a href="/projects/">projects</a>
+            <a href="/who/">who</a>
+            <a href="/">home</a>
+        </div>
+
+        <div class="socials">
+
+            <a class="social" href="https://github.com/werdl"><i class="fab fa-github"></i></a>
+            <a class="social" href="https://werdl.blogspot.com"><i class="fa-solid fa-blog"></i></a>
+            <a class="social tilde" href="https://tilde.club/~werdl">~</a>
+        </div>
+    </div>
+
+    <div class="content">
+        
+    </div>
+
+    <script>
+        let posts = [
+            {
+                title: "why i dislike javascript",
+                date: "2024-02-27",
+                md_content: `
+- it's slow
+- it's bloated
+- it's not very secure
+- it refuses to die
+- it refuses to remove APIs that are clearly not just bad, but broken \*\*cough*\* XMLHttpRequest \*\*cough*\*`
+            }
+        ];
+
+
+        let div = document.createElement("div");
+
+        posts.forEach(post => {
+
+            let container_div = document.createElement("div");
+
+            let h2 = document.createElement("h2");
+            h2.innerText = post.title;
+            div.appendChild(h2);
+
+            let p = document.createElement("p");
+            p.innerText = post.date;
+            div.appendChild(p);
+
+            let content = document.createElement("div");
+            content.innerHTML = marked.parse(post.md_content);
+            container_div.appendChild(content);
+
+            if (posts[posts.length - 1] !== post) {
+                let hr = document.createElement("hr");
+                container_div.appendChild(hr);
+            }
+
+            div.appendChild(container_div);
+        });
+
+        document.querySelector(".content").appendChild(div);
+
+
+    </script>
+</body>
+
+</html>

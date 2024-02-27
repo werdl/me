@@ -63,3 +63,13 @@ a.social:hover {
 
     color: #5e5e5e;
 }
+
+.content {
+    padding-left: 20vw;
+    padding-right: 20vw;
+    padding-top: 5vh;
+}
+
+.stuff {
+    padding-top: 5vh;
+}
