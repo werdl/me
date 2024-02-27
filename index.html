@@ -14,15 +14,18 @@ https://cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/css/jetbrains-mono.min.css
     <script src="https://kit.fontawesome.com/e07fe2ed46.js" crossorigin="anonymous"></script>
 
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
 </head>
 
 <body>
     <div class="navbar">
         <div class="links">
-            <a href="/miniblog/">miniblog</a>
-            <a href="/projects/">projects</a>
-            <a href="/who/">who</a>
-            <a href="/" class="focus">home</a>
+            <a href="index.html" class="focus">home</a>
+            <a href="#who">who</a>
+            <a href="#projects">projects</a>
+            <a href="#miniblog">miniblog</a>
         </div>
 
         <div class="socials">
@@ -36,17 +39,129 @@ https://cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/css/jetbrains-mono.min.css
     <div class="content">
         <h1>werdl</h1>
         hi, i'm werdl. i enjoy programming, electronics, and maths. i'm also a fan of the command line and open source
-        software. i enjoy writing low-level, systems, networking and embedded software. i'm currently studying computer science.
+        software. i enjoy writing low-level, systems, networking and embedded software. i'm currently studying computer
+        science.
         <div class="stuff">
             <h2>stuff i know</h2>
             <h3>languages</h3>
-            i know extensive c, python and v. i also know a lot of rust, and a fair bit of javascript and other web tech.
+            i know extensive c, python and v. i also know a lot of rust, and a fair bit of javascript and other web
+            tech.
             <h3>tools</h3>
-            i'm very familiar with linux (and other *nix systems), git and vscode. i use bash, powershell (not 6, only on windows when forced!) and msys2/mingw64. i also know a fair amount of neovim, and the obligatory amount of straight *nix vi. i have used arduino and other microcontroller platforms quite a lot, and am familiar with logisim evolution and circuitry.
+            i'm very familiar with linux (and other *nix systems), git and vscode. i use bash, powershell (not 6, only
+            on windows when forced!) and msys2/mingw64. i also know a fair amount of neovim, and the obligatory amount
+            of straight *nix vi. i have used arduino and other microcontroller platforms quite a lot, and am familiar
+            with logisim evolution and circuitry.
             <h3>frameworks</h3>
-            i enjoy using flask, and other similar web frameworks, for example tide for rust. i also like serde for rust. obviously i am familiar with all the needed standard libraries. i also have written a fair few frameworks and libraries myself, mainly in rust and python.
+            i enjoy using flask, and other similar web frameworks, for example tide for rust. i also like serde for
+            rust. obviously i am familiar with all the needed standard libraries. i also have written a fair few
+            frameworks and libraries myself, mainly in rust and python.
         </div>
     </div>
+    <hr id="who">
+    <div class="content">
+        <h1>who i am</h1>
+        i am werdl, a computer geek.
+        <h2>things i enjoy</h2>
+        programming, networking, linux, *nix, open source, low-level stuff, embedded development, systems programming,
+        physics, electronics, maths, chemistry, cats, and yoghurt.
+        <h2>things i don't enjoy</h2>
+        windows, macos, proprietary software, javascript, large corporations, and large dogs.
+    </div>
+    <hr id="projects">
+    <div class="content">
+        <h1>projects i have authored</h1>
+        i have written a fair few projects, almost all of which are open source.
+        <ul>
+            <li>
+                <a href="https://github.com/spartanproj/os">blueberryos</a> - a simple text based i386 operating system,
+                written in c and assembly
+            </li>
+            <li>
+                <a href="https://github.com/werdl/safile">safile</a> - a file access server designed to preserve access to files in the event of a system failure, by delegation to a subserver. written in python
+            </li>
+            <li>
+                <a href="https://github.com/spartanproj/rosemary">rosemary</a> - a simple programming language, written in python, transpiled to c
+            </li>
+            <li>
+                <a href="https://github.com/dispatch-x/api">dispatch</a> - a secure chat service, written in python. i wrote the server and <a href="https://github.com/dispatch-x/py">a python client</a>, but my friend has abandoned the frontend :-(
+            </li>
+            <li>
+                <a href="https://github.com/werdl/thetime">thetime</a> - a simple end-user friendly time library, written in rust
+            </li>
+        </ul>
+    </div>
+    <hr id="miniblog">
+    <div class="content" id="miniblog-content">
+
+    </div>
+
+    <script>
+        let posts = [
+            {
+                title: "why i dislike javascript",
+                date: "2024-02-27",
+                md_content: `
+- it's slow
+- it's bloated
+- it's not very secure
+- it refuses to die
+- it refuses to remove APIs that are clearly not just bad, but broken \*\*cough*\* XMLHttpRequest \*\*cough*\*`
+            }
+        ];
+
+
+        let div = document.createElement("div");
+
+        posts.forEach(post => {
+
+            let container_div = document.createElement("div");
+
+            let h2 = document.createElement("h2");
+            h2.innerText = post.title;
+            div.appendChild(h2);
+
+            let p = document.createElement("p");
+            p.innerText = post.date;
+            div.appendChild(p);
+
+            let content = document.createElement("div");
+            content.innerHTML = marked.parse(post.md_content);
+            container_div.appendChild(content);
+
+            if (posts[posts.length - 1] !== post) {
+                let hr = document.createElement("hr");
+                container_div.appendChild(hr);
+            }
+
+            div.appendChild(container_div);
+        });
+
+        document.querySelector("#miniblog-content").appendChild(div);
+
+        /* when a hr is scrolled to, the corresponding section is highlighted in the navbar */
+        let observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                let id = entry.target.getAttribute("id");
+                let link = document.querySelector(`.links a[href="#${id}"]`);
+                if (entry.intersectionRatio > 0) {
+                    // remove from home
+                    document.querySelector(".links a[href='index.html']").classList.remove("focus");
+                    link.classList.add("focus");
+                } else {
+                    link.classList.remove("focus");
+                }
+
+                // if none are focused, focus home
+                if (!document.querySelector(".links a.focus")) {
+                    document.querySelector(".links a[href='index.html']").classList.add("focus");
+                }
+            });
+        });
+
+        document.querySelectorAll("hr").forEach(hr => {
+            observer.observe(hr);
+        });
+    </script>
 </body>
 
 </html>
