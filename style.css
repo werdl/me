@@ -1,14 +1,14 @@
 body {
-    background-color:
-        /* muddy white */
-        #f5f5f5;
+    background-color: var(--bg-color);
 
     font-family: 'Jetbrains Mono', monospace;
 
-    color: black;
+    color: var(--text-color);
 
     margin: 0;
     font-weight: 500;
+
+    
 }
 
 /*
@@ -16,7 +16,7 @@ Navbar - on hover, each links border goes inward
 */
 
 .navbar {
-    background-color: #f5f5f5;
+    background-color: var(--bg-color);
 
     display: flex;
     flex-direction: row;
@@ -30,12 +30,16 @@ Navbar - on hover, each links border goes inward
 .navbar a {
     margin: 0.5rem;
     box-sizing: border-box;
-    color: black;
+    color: var(--text-color);
     text-decoration: none;
     padding: 1rem 1.25rem;
     display: inline-block;
 
     font-size: 1.25rem;
+}
+
+.navbar span {
+    display: inline-block;
 }
 
 .navbar a:hover {
@@ -81,7 +85,7 @@ hr {
     border: 0;
     height: 0.05rem;
     background: #333;
-    background-image: linear-gradient(to right, white, black, white);
+    background-image: linear-gradient(to right, var(--bg-color), var(--text-color), var(--bg-color));
 
     width: 75%;
 }
@@ -91,7 +95,7 @@ ul li {
 }
 
 .socials-bottom {
-    color: black;
+    color: var(--text-color);
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -102,7 +106,7 @@ ul li {
     display: inline-block;
     margin: 0.5rem;
 
-    color: black;
+    color: var(--text-color);
 
     text-decoration: none;
 }
@@ -117,6 +121,112 @@ footer {
 
 }
 
-div.year::before {
-    content: ' ';
+
+#theme {
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+}
+
+.light-mode {
+    --bg-color: #f5f5f5;
+    --text-color: #000;
+}
+
+/* Dark Mode */
+.dark-mode {
+    --bg-color: #000;
+    --text-color: #f5f5f5;
+}
+
+/* Toggle Switch Styles */
+.toggle-container {
+    display: flex;
+    align-items: center;
+}
+
+.toggle-switch {
+    position: relative;
+    cursor: pointer;
+    margin-right: 1em;
+    /* Adjust margin as needed */
+}
+
+.toggle-switch input {
+    display: none;
+}
+
+#theme {
+    margin: 0.5rem;
+}
+
+.toggle-slider {
+    width: 2.5em;
+    height: 1.2em
+        /* no idea why, but 1.2em works best */
+    ;
+    background-color: var(--bg-color);
+    border-radius: 1.25em;
+    top: 0;
+    left: 0;
+    transition: 0.4s;
+
+    border: 0.063em solid #888;
+}
+
+.toggle-slider:before {
+    content: "\f185";
+    /* sun icon */
+    font-family: 'Font Awesome 6 Free';
+    font-size: 1em;
+    color: var(--text-color);
+    background-color: var(--bg-color) !important;
+    position: absolute;
+    left: 0.156em;
+    bottom: calc(0.156em + 1.25rem);
+    transition: 0.5s;
+    border-radius: 50%;
+}
+
+input:checked+.toggle-slider:before {
+    content: "\f186";
+    /* moon icon */
+    font-family: 'Font Awesome 6 Free';
+    font-size: 1em;
+    color: var(--text-color);
+    background-color: var(--bg-color) !important;
+    position: absolute;
+    left: 0.156em;
+    bottom: calc(0.156em + 1.25rem);
+    transition: 0.5s;
+    border-radius: 50%;
+
+}
+
+input:checked+.toggle-slider {
+    background-color: #000;
+
+
+    /* Toggle switch color when ON */
+}
+
+input:checked+.toggle-slider:before {
+    transform: translateX(1.25em);
+    /* Move the circle to the right when ON */
+}
+
+/* Change color when OFF */
+input:not(:checked)+.toggle-slider:before {
+    background-color: #000;
+    /* Change the color when OFF */
+}
+
+/* Animation on Toggle */
+.toggle-slider:active:before {
+    transform: scale(1.5);
+}
+
+body.emergency {
+    transition: none !important;
 }

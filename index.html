@@ -11,15 +11,17 @@ https://cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/css/jetbrains-mono.min.css
 
     <link rel="stylesheet" href="style.css">
 
-    <script src="https://kit.fontawesome.com/e07fe2ed46.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/theme-toggles@version/css/half-sun.min.css" />
+
 </head>
 
-<body>
+<body class="light-mode">
     <div class="navbar">
         <div class="links">
             <a href="index.html" class="focus">home</a>
@@ -30,6 +32,14 @@ https://cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/css/jetbrains-mono.min.css
         </div>
 
         <div class="socials">
+            <span id="theme">
+                <span class="toggle-container">
+                    <label class="toggle-switch">
+                        <input id="checker-actual" type="checkbox" onclick="toggleTheme();">
+                        <div class="toggle-slider"></div>
+                    </label>
+                </span>
+            </span>
             <a class="social" href="https://github.com/werdl"><i class="fab fa-github"></i></a>
             <a class="social" href="https://werdl.blogspot.com"><i class="fa-solid fa-blog"></i></a>
             <a class="social tilde" href="https://tilde.club/~werdl">~</a>
@@ -77,16 +87,21 @@ https://cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/css/jetbrains-mono.min.css
                 written in c and assembly
             </li>
             <li>
-                <a href="https://github.com/werdl/safile">safile</a> - a file access server designed to preserve access to files in the event of a system failure, by delegation to a subserver. written in python
+                <a href="https://github.com/werdl/safile">safile</a> - a file access server designed to preserve access
+                to files in the event of a system failure, by delegation to a subserver. written in python
             </li>
             <li>
-                <a href="https://github.com/spartanproj/rosemary">rosemary</a> - a simple programming language, written in python, transpiled to c
+                <a href="https://github.com/spartanproj/rosemary">rosemary</a> - a simple programming language, written
+                in python, transpiled to c
             </li>
             <li>
-                <a href="https://github.com/dispatch-x/api">dispatch</a> - a secure chat service, written in python. i wrote the server and <a href="https://github.com/dispatch-x/py">a python client</a>, but my friend has abandoned the frontend :-(
+                <a href="https://github.com/dispatch-x/api">dispatch</a> - a secure chat service, written in python. i
+                wrote the server and <a href="https://github.com/dispatch-x/py">a python client</a>, but my friend has
+                abandoned the frontend :-(
             </li>
             <li>
-                <a href="https://github.com/werdl/thetime">thetime</a> - a simple end-user friendly time library, written in rust
+                <a href="https://github.com/werdl/thetime">thetime</a> - a simple end-user friendly time library,
+                written in rust
             </li>
         </ul>
     </div>
@@ -114,6 +129,64 @@ https://cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/css/jetbrains-mono.min.css
 
 
     <script>
+        let theme = "light";
+
+        function setCookie(key, value) {
+    console.log("setting cookie");
+    document.cookie = `${key}=${value}; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
+    console.log(document.cookie);
+}
+
+function getCookie(key) {
+    let cookies = document.cookie.split("; ");
+    for (let cookie of cookies) {
+        let [name, value] = cookie.split("=");
+        if (name === key) {
+            return value;
+        }
+    }
+    return null;
+}
+
+        function toggleTheme() {
+            console.log("theme");
+
+            let normal_color = getComputedStyle(document.body).getPropertyValue('--text-color');
+
+            let old_normal = normal_color;
+
+            document.body.classList.remove("emergency");
+            if (theme === "light") {
+                theme = "dark";
+                document.getElementById("checker-actual").checked = true;
+                normal_color = "white";
+            } else {
+                theme = "light";
+                document.getElementById("checker-actual").checked = false;
+                normal_color = "black";
+            }
+
+            document.body.classList.add(theme === "dark" ? "dark-mode" : "light-mode");
+            document.body.classList.remove(theme === "dark" ? "light-mode" : "dark-mode");
+
+            normal_color = theme === "dark" ? "white" : "black";
+
+            let color = getCookie("color");
+            if (color) {
+                if (!((color == "white" && theme == "light") || (color == "black" && theme == "dark"))) {
+                    document.body.style.setProperty('--text-color', color);
+                } else {
+                    setCookie("color", normal_color);
+                    document.body.style.setProperty('--text-color', normal_color);
+                }
+            } else {
+                document.body.style.setProperty('--text-color', normal_color);
+            }
+
+            // save theme in local storage
+            setCookie("theme", theme);
+        }
+
         let posts = [
             {
                 title: "why i dislike javascript",
@@ -181,7 +254,7 @@ https://cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/css/jetbrains-mono.min.css
         });
 
         /* update the year in the footer */
-        document.querySelector(".year").innerHTML = " " + (new Date().getFullYear()).toString();
+        document.querySelector(".year").innerHTML = "&nbsp;" + (new Date().getFullYear()).toString();
     </script>
 </body>
 
