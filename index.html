@@ -24,22 +24,15 @@ https://cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/css/jetbrains-mono.min.css
 <body class="light-mode">
     <div class="navbar">
         <div class="links">
-            <a href="index.html" class="focus">home</a>
-            <a href="#who">who</a>
-            <a href="#projects">projects</a>
-            <a href="#miniblog">miniblog</a>
-            <a href="#contact">contact</a>
+            <a href="index.html" id="home-link">home</a>
+            <a href="#who" id="who-link">who</a>
+            <a href="#projects" id="projects-link">projects</a>
+            <a href="#miniblog" id="miniblog-link">miniblog</a>
+            <a href="#contact" id="contact-link">contact</a>
         </div>
 
         <div class="socials">
-            <span id="theme">
-                <span class="toggle-container">
-                    <label class="toggle-switch">
-                        <input id="checker-actual" type="checkbox" onclick="toggleTheme();">
-                        <div class="toggle-slider"></div>
-                    </label>
-                </span>
-            </span>
+            <a class="social" href="javascript:toggleTheme()"><i id="fa-icon"></i></a>
             <a class="social" href="https://github.com/werdl"><i class="fab fa-github"></i></a>
             <a class="social" href="https://werdl.blogspot.com"><i class="fa-solid fa-blog"></i></a>
             <a class="social tilde" href="https://tilde.club/~werdl">~</a>
@@ -47,7 +40,7 @@ https://cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/css/jetbrains-mono.min.css
     </div>
 
     <div class="content">
-        <h1>werdl</h1>
+        <h1 id="me">werdl</h1>
         hi, i'm werdl. i enjoy programming, electronics, and maths. i'm also a fan of the command line and open source
         software. i enjoy writing low-level, systems, networking and embedded software. i'm currently studying computer
         science.
@@ -66,6 +59,15 @@ https://cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/css/jetbrains-mono.min.css
             rust. obviously i am familiar with all the needed standard libraries. i also have written a fair few
             frameworks and libraries myself, mainly in rust and python.
         </div>
+        <div class="stuff">
+            <h2>stuff i want to know</h2>
+            <h3>languages</h3>
+            i want to learn more about haskell, and other functional languages. i also want to learn more about zig and maybe nim.
+            <h3>tools</h3>
+            i want to know more about docker and similar.
+            <h3>frameworks</h3>
+            i want to learn more about webassembly and the tools surrounding it.
+        </div>
     </div>
     <hr id="who">
     <div class="content">
@@ -77,7 +79,9 @@ https://cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/css/jetbrains-mono.min.css
         <h2>things i don't enjoy</h2>
         windows, macos, proprietary software, javascript, large corporations, and large dogs.
     </div>
+
     <hr id="projects">
+
     <div class="content">
         <h1>projects i have authored</h1>
         i have written a fair few projects, almost all of which are open source.
@@ -132,60 +136,56 @@ https://cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/css/jetbrains-mono.min.css
         let theme = "light";
 
         function setCookie(key, value) {
-    console.log("setting cookie");
-    document.cookie = `${key}=${value}; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
-    console.log(document.cookie);
-}
-
-function getCookie(key) {
-    let cookies = document.cookie.split("; ");
-    for (let cookie of cookies) {
-        let [name, value] = cookie.split("=");
-        if (name === key) {
-            return value;
+            console.log("setting cookie");
+            document.cookie = `${key}=${value}; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
+            console.log(document.cookie);
         }
-    }
-    return null;
-}
+
+        function getCookie(key) {
+            let cookies = document.cookie.split("; ");
+            for (let cookie of cookies) {
+                let [name, value] = cookie.split("=");
+                if (name === key) {
+                    return value;
+                }
+            }
+            return null;
+        }
 
         function toggleTheme() {
-            console.log("theme");
-
-            let normal_color = getComputedStyle(document.body).getPropertyValue('--text-color');
-
-            let old_normal = normal_color;
-
-            document.body.classList.remove("emergency");
             if (theme === "light") {
                 theme = "dark";
-                document.getElementById("checker-actual").checked = true;
-                normal_color = "white";
+                document.body.classList.remove("light-mode");
+                document.body.classList.add("dark-mode");
             } else {
                 theme = "light";
-                document.getElementById("checker-actual").checked = false;
-                normal_color = "black";
+                document.body.classList.remove("dark-mode");
+                document.body.classList.add("light-mode");
             }
 
-            document.body.classList.add(theme === "dark" ? "dark-mode" : "light-mode");
-            document.body.classList.remove(theme === "dark" ? "light-mode" : "dark-mode");
+            document.querySelector("#fa-icon").classList.remove(theme === "light" ? "fa-sun" : "fa-moon");
 
-            normal_color = theme === "dark" ? "white" : "black";
-
-            let color = getCookie("color");
-            if (color) {
-                if (!((color == "white" && theme == "light") || (color == "black" && theme == "dark"))) {
-                    document.body.style.setProperty('--text-color', color);
-                } else {
-                    setCookie("color", normal_color);
-                    document.body.style.setProperty('--text-color', normal_color);
-                }
-            } else {
-                document.body.style.setProperty('--text-color', normal_color);
+            if (!document.querySelector("#fa-icon").classList.contains("fa-solid")) {
+                document.querySelector("#fa-icon").classList.add("fas");
             }
 
-            // save theme in local storage
+            document.querySelector("#fa-icon").classList.add(theme === "light" ? "fa-moon" : "fa-sun");
+
             setCookie("theme", theme);
         }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            let cookie = getCookie("theme");
+            if (cookie) {
+                theme = cookie;
+                document.body.classList.add(theme + "-mode");
+
+                theme = theme === "light" ? "dark" : "light";
+                toggleTheme();
+            } else {
+                setCookie("theme", theme);
+            }
+        });
 
         let posts = [
             {
@@ -199,6 +199,12 @@ function getCookie(key) {
 - it refuses to remove APIs that are clearly not just bad, but broken \*\*cough*\* XMLHttpRequest \*\*cough*\*`
             }
         ];
+
+        function checkVisible(elm) {
+            var rect = elm.getBoundingClientRect();
+            var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
+            return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
+        }
 
 
         let div = document.createElement("div");
@@ -220,8 +226,8 @@ function getCookie(key) {
             container_div.appendChild(content);
 
             if (posts[posts.length - 1] !== post) {
-                let hr = document.createElement("hr");
-                container_div.appendChild(hr);
+                let br = document.createElement("br");
+                container_div.appendChild(br);
             }
 
             div.appendChild(container_div);
@@ -241,13 +247,16 @@ function getCookie(key) {
                 } else {
                     link.classList.remove("focus");
                 }
-
-                // if none are focused, focus home
-                if (!document.querySelector(".links a.focus")) {
-                    document.querySelector(".links a[href='index.html']").classList.add("focus");
-                }
             });
+
+
+            // if none are focused, focus home
+            if (!document.querySelector(".links a.focus")) {
+                document.querySelector(".links a[href='index.html']").classList.add("focus");
+            }
         });
+        
+
 
         document.querySelectorAll("hr").forEach(hr => {
             observer.observe(hr);
