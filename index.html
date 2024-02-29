@@ -17,7 +17,8 @@ https://cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/css/jetbrains-mono.min.css
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/theme-toggles@version/css/half-sun.min.css" />
+
+    <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
 
 </head>
 
@@ -39,7 +40,7 @@ https://cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/css/jetbrains-mono.min.css
         </div>
     </div>
 
-    <div class="content">
+    <div class="content" id="home">
         <h1 id="me">werdl</h1>
         hi, i'm werdl. i enjoy programming, electronics, and maths. i'm also a fan of the command line and open source
         software. i enjoy writing low-level, systems, networking and embedded software. i'm currently studying computer
@@ -62,15 +63,16 @@ https://cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/css/jetbrains-mono.min.css
         <div class="stuff">
             <h2>stuff i want to know</h2>
             <h3>languages</h3>
-            i want to learn more about haskell, and other functional languages. i also want to learn more about zig and maybe nim.
+            i want to learn more about haskell, and other functional languages. i also want to learn more about zig and
+            maybe nim.
             <h3>tools</h3>
             i want to know more about docker and similar.
             <h3>frameworks</h3>
             i want to learn more about webassembly and the tools surrounding it.
         </div>
     </div>
-    <hr id="who">
-    <div class="content">
+    <hr>
+    <div class="content" id="who">
         <h1>who i am</h1>
         i am werdl, a computer geek.
         <h2>things i enjoy</h2>
@@ -78,11 +80,27 @@ https://cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/css/jetbrains-mono.min.css
         physics, electronics, maths, chemistry, cats, and yoghurt.
         <h2>things i don't enjoy</h2>
         windows, macos, proprietary software, javascript, large corporations, and large dogs.
+        <h2>a little about me</h2>
+        i am a computer science student, and have been programming for a little over 5 years.
+        <ul id="desc">
+            <li class="icon" id="python">initially, i took to python</li>
+            <li class="icon" id="javascript">after that, i learnt a little bit of web dev</li>
+            <li class="icon" id="github">a little while after that, i made my github account, and began to code much
+                more</li>
+            <li class="icon" id="c">once i made my github account and doing some python, i learnt c</li>
+            <li class="icon" id="debian">after this, i installed debian as my daily driver, which i still frequently use, because <i class="devicon-linux-plain"></i> is better than <i class="fab fa-windows"></i></li>
+            </li>
+            <li class="icon" id="neovim">i also learnt neovim to just try it out, but i use vs code now</li>
+            <li class="icon" id="vscode">i use vscode because it allows me to work faster than in neovim, though i use vi and nano in a text-only environment</li>
+            <li class="icon" id="flask">in order to get better at web dev, i learnt flask</li>
+            <li class="icon" id="rust">i also learnt rust, in order to get acquainted with new ideas about development
+            </li>
+        </ul>
     </div>
 
-    <hr id="projects">
+    <hr>
 
-    <div class="content">
+    <div class="content" id="projects">
         <h1>projects i have authored</h1>
         i have written a fair few projects, almost all of which are open source.
         <ul>
@@ -109,25 +127,26 @@ https://cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/css/jetbrains-mono.min.css
             </li>
         </ul>
     </div>
-    <hr id="miniblog">
-    <div class="content" id="miniblog-content">
+    <hr>
+    <div class="content" id="miniblog">
 
     </div>
 
-    <hr id="contact">
-    <div class="content" id="contact-content">
+    <hr>
+    <div class="content" id="contact">
         <h1>contact</h1>
         <div class="contact">
             email me at <a href="mailto:werdl_is_cool@outlook.com">werdl_is_cool@outlook.com</a>
         </div>
-        <div class="socials-bottom">
-            <a class="social" href="https://github.com/werdl"><i class="fab fa-github"></i></a>
-            <a class="social" href="https://werdl.blogspot.com"><i class="fa-solid fa-blog"></i></a>
-            <a class="social tilde" href="https://tilde.club/~werdl">~</a>
-        </div>
+
+    </div>
+
+    <div class="socials-bottom">
+        <a class="social" href="https://github.com/werdl/me"><i class="fab fa-github"></i></a>
     </div>
 
     <footer>
+
         made by werdl. (c) <div class="year"></div>
     </footer>
 
@@ -197,6 +216,20 @@ https://cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/css/jetbrains-mono.min.css
 - it's not very secure
 - it refuses to die
 - it refuses to remove APIs that are clearly not just bad, but broken \*\*cough*\* XMLHttpRequest \*\*cough*\*`
+            },
+            {
+                title: "why i like rust",
+                date: "2024-02-26",
+                md_content: `
+- it's fast
+- it's safe
+- it's modern
+- it has option and result types
+- it has a great package manager
+- it has a great build system
+- it has a great community
+- it has a great standard library
+`
             }
         ];
 
@@ -210,6 +243,7 @@ https://cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/css/jetbrains-mono.min.css
         let div = document.createElement("div");
 
         posts.forEach(post => {
+            console.log(post)
 
             let container_div = document.createElement("div");
 
@@ -225,45 +259,86 @@ https://cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/css/jetbrains-mono.min.css
             content.innerHTML = marked.parse(post.md_content);
             container_div.appendChild(content);
 
+
             if (posts[posts.length - 1] !== post) {
                 let br = document.createElement("br");
                 container_div.appendChild(br);
             }
 
             div.appendChild(container_div);
+
+
         });
 
-        document.querySelector("#miniblog-content").appendChild(div);
+        document.querySelector("#miniblog").appendChild(div);
+        console.log("appended to final div")
+
 
         /* when a hr is scrolled to, the corresponding section is highlighted in the navbar */
         let observer = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 let id = entry.target.getAttribute("id");
+                console.log(id);
+
                 let link = document.querySelector(`.links a[href="#${id}"]`);
-                if (entry.intersectionRatio > 0) {
+                if (id === "home") {
+                    link = document.querySelector(".links a[href='index.html']");
+                }
+                // ensure it is only highlighted when the section is visible beneath the navbar
+                if (entry.intersectionRatio > 0 && checkVisible(entry.target)) {
                     // remove from home
                     document.querySelector(".links a[href='index.html']").classList.remove("focus");
+                    console.log(link, id, entry.intersectionRatio)
+
                     link.classList.add("focus");
                 } else {
                     link.classList.remove("focus");
                 }
             });
 
-
             // if none are focused, focus home
             if (!document.querySelector(".links a.focus")) {
                 document.querySelector(".links a[href='index.html']").classList.add("focus");
             }
         });
-        
 
 
-        document.querySelectorAll("hr").forEach(hr => {
-            observer.observe(hr);
+
+        document.querySelectorAll("div.content").forEach(div => {
+            observer.observe(div);
         });
 
         /* update the year in the footer */
         document.querySelector(".year").innerHTML = "&nbsp;" + (new Date().getFullYear()).toString();
+
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll(".icon").forEach(py => {
+                py.innerHTML = `<i class='devicon-${py.id}-plain'></i>&nbsp;&nbsp;` + py.innerHTML;
+            });
+        });
+
+        // when the r key is pressed, followed by e, then d, the whole page goes red
+        let keys = [];
+        document.addEventListener("keydown", e => {
+            keys.push(e.key);
+            if (keys.length > 3) {
+                keys.shift();
+            }
+            if (keys.join("") === "red") {
+                document.body.style.backgroundColor = "red";
+                document.querySelector(".navbar").style.backgroundColor = "red";
+            }
+            if (keys.join("") === "cat") {
+                document.body.style.backgroundImage = "url('cat.jpg')";
+                document.body.style.backgroundSize = "cover";
+                
+                // ensure that the cat is stationary, and not moving with the page
+
+                document.body.style.backgroundAttachment = "fixed";
+                document.body.style.backgroundRepeat = "no-repeat";
+
+            }
+        });
     </script>
 </body>
 
